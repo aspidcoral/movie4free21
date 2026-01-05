@@ -1,0 +1,11 @@
+.env
+env/
+__pycache__/
+app/__pycache__/
+tmdb_api/__pycache__/
+GEMINI.md
+
+.gemini/
+gha-creds-*.json
+channel.log
+recent_posts.txt
