@@ -48,18 +48,16 @@ async def post_to_nostr(movie):
         genre_names = [genres.get(genre_id) for genre_id in genre_ids if genres and genres.get(genre_id)]
         genre_hashtags = " ".join([f"#{genre.replace(' ', '')}" for genre in genre_names])
         
-        content = f"🎬 {title} ({date[:4]})"
-        content += f"📄Overview: {overview}"
-        content += f"⭐Rating: {rating} ({votes} votes)"
-        content += f"#movies #free #hd {genre_hashtags}"
-        content += f"🎥Watch here: https://www.vidking.net/embed/movie/{id}"
-        content += f"\nSearch Movies Telegram: https://t.me/Movies4Free21Bot"
-        
-        if trailer_url:
-            content += f"\nTrailer: {trailer_url}"
-            
+        content = f"🎬 {title} ({date[:4]})\n\n"
+        content += f"📄Overview: {overview}\n"
+        content += f"⭐Rating: {rating} ({votes} votes)\n"
         if backdrop:
-             content += f"\nhttps://image.tmdb.org/t/p/original{backdrop}"
+            content += f"https://image.tmdb.org/t/p/original{backdrop}\n"
+        if trailer_url:
+            content += f"\nTrailer (link below) {trailer_url}\n"
+        content += f"🎥Watch here (link below) https://www.vidking.net/embed/movie/{id}\n"
+        content += f"Search Movies Telegram (link below) https://t.me/Movies4Free21Bot\n"
+        content += f"#movies #free #hd {genre_hashtags}"
 
         print(f"Posting to Nostr: {title}")
         event = await EventBuilder.text_note(content).sign(signer)
