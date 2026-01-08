@@ -49,10 +49,10 @@ async def post_to_nostr(movie):
         genre_hashtags = " ".join([f"#{genre.replace(' ', '')}" for genre in genre_names])
         
         content = f"🎬 {title} ({date[:4]})\n\n"
-        content += f"📄Overview: {overview}\n"
-        content += f"⭐Rating: {rating} ({votes} votes)\n"
         if backdrop:
             content += f"https://image.tmdb.org/t/p/original{backdrop}\n"
+        content += f"📄Overview: {overview}\n"
+        content += f"⭐Rating: {rating} ({votes} votes)\n"
         if trailer_url:
             content += f"\nTrailer (link below) {trailer_url}\n"
         content += f"🎥Watch here (link below) https://www.vidking.net/embed/movie/{id}\n"
