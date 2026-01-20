@@ -20,3 +20,24 @@ def get_pagination_keyboard(page: int = 0, total_pages: int = 0):
         keyboard_rows.append(current_row)
 
     return InlineKeyboardMarkup(inline_keyboard=keyboard_rows)
+
+def get_seasons_keyboard(seasons, tv_id):
+    buttons = []
+    for season in seasons:
+        season_number = season.get('season_number')
+        season_name = season.get('name', f'Season {season_number}')
+        callback_data = f"season_{tv_id}_{season_number}"
+        buttons.append(InlineKeyboardButton(text=season_name, callback_data=callback_data))
+
+    keyboard_rows = []
+    current_row = []
+    row_width = 2
+    for button in buttons:
+        current_row.append(button)
+        if len(current_row) == row_width:
+            keyboard_rows.append(current_row)
+            current_row = []
+    if current_row:
+        keyboard_rows.append(current_row)
+    
+    return InlineKeyboardMarkup(inline_keyboard=keyboard_rows)

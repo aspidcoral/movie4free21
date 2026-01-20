@@ -59,7 +59,59 @@ def search_movie(keyword: str):
     except ValueError:
         return "Failed to decode JSON response."
 
+def search_tv(keyword: str):
+    """
+    Searches for a TV show using the TMDB API.
+    """
+    access_token = get_env_variable("TMDB_ACCESS_TOKEN")
+    url = f"https://api.themoviedb.org/3/search/tv?query={keyword}&page=1"
+
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {access_token}"
+    }
+
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
+
+        data = response.json()
+        if data['results']:
+            return data['results']
+        else:
+            return "No TV shows found for that keyword."
+
+    except requests.exceptions.HTTPError as http_err:
+        return f"HTTP error occurred: {http_err}"
+    except requests.exceptions.RequestException as req_err:
+        return f"An error occurred: {req_err}"
+    except ValueError:
+        return "Failed to decode JSON response."
+
+def get_tv_details(tv_id: int):
+    """
+    Retrieves details for a specific TV show, including seasons.
+    """
+    access_token = get_env_variable("TMDB_ACCESS_TOKEN")
+    url = f"https://api.themoviedb.org/3/tv/{tv_id}"
+
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {access_token}"
+    }
+
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching TV details: {e}")
+        return None
+
 if __name__ == "__main__":
+    print("Searching for movie 'filth':")
     print(search_movie("filth"))
+    print("\nSearching for TV show 'The Boys':")
+    print(search_tv("The Boys"))
     
 
