@@ -63,7 +63,7 @@ async def cmd_start(message: Message):
     user = message.from_user.username
     action = "/start"
     log_message(user, action)
-    bot_message = f"Hello, *{escape_markdown(message.from_user.first_name)}*, You’re using a bot for searching movies & TV shows 🎬\nTo start searching, use /movie or /tv-show commands."
+    bot_message = f"Hello, *{escape_markdown(message.from_user.first_name)}*, You’re using a bot for searching movies & TV shows 🎬\nTo start searching, use /movie or /tv\-show commands"
     await message.answer(text=bot_message, parse_mode='MarkdownV2')
     log_message(user, action, bot_message)
 
