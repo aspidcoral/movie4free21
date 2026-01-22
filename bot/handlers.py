@@ -51,7 +51,7 @@ def format_results(items, item_type='movie'):
         rating = escape_markdown(f"{item.get('vote_average', 0)}({item.get('vote_count', 0)} votes)")
         original_language = escape_markdown(item.get('original_language', 'N/A'))
 
-        result_string += f"*{i+1}\\. __{title}__\n"
+        result_string += f"*{i+1}\\.* __{title}__\n"
         result_string += f"*Overview:* _{overview}_\n"
         result_string += f"*Rating:* {rating}\n"
         result_string += f"*Original language:* {original_language}\n"
