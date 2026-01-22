@@ -3,7 +3,6 @@ from aiogram import Bot
 from dotenv import load_dotenv, find_dotenv
 import requests
 import os
-import socket
 import time
 import datetime
 import random
@@ -82,18 +81,6 @@ def register_post(movie_id):
     save_recent_posts()
 
 def request_trending_movies():
-    # --- DNS Workaround ---
-    # This patches the socket library to manually resolve api.themoviedb.org to a known correct IP.
-    # This is required to bypass a persistent local DNS issue.
-    original_getaddrinfo = socket.getaddrinfo
-    def patched_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
-        if host == 'api.themoviedb.org':
-            return original_getaddrinfo('52.85.132.60', port, family, type, proto, flags)
-        # For all other hosts, use the original function
-        return original_getaddrinfo(host, port, family, type, proto, flags)
-    socket.getaddrinfo = patched_getaddrinfo
-    # --- End DNS Workaround ---
-
     # Get a list of trending movies
     API_KEY = os.getenv("TMDB_API_KEY")
     url = "https://api.themoviedb.org/3/trending/movie/day"
@@ -120,20 +107,6 @@ def request_trending_movies():
     return None
 
 def request_random_movie():
-    # --- DNS Workaround ---
-    # This patches the socket library to manually resolve api.themoviedb.org to a known correct IP.
-    # This is required to bypass a persistent local DNS issue.
-    original_getaddrinfo = socket.getaddrinfo
-    def patched_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
-        if host == 'api.themoviedb.org':
-            # Return the address information for a known good IP.
-            # You can use any of the valid IPs you found earlier.
-            return original_getaddrinfo('52.85.132.60', port, family, type, proto, flags)
-        # For all other hosts, use the original function
-        return original_getaddrinfo(host, port, family, type, proto, flags)
-    socket.getaddrinfo = patched_getaddrinfo
-    # --- End DNS Workaround ---
-
     # Get a random movie
     API_KEY = os.getenv("TMDB_API_KEY")
     url = "https://api.themoviedb.org/3/discover/movie"

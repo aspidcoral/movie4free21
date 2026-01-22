@@ -4,7 +4,7 @@ __pycache__/
 app/__pycache__/
 tmdb_api/__pycache__/
 GEMINI.md
-
+proxychains.conf
 .gemini/
 gha-creds-*.json
 channel.log
