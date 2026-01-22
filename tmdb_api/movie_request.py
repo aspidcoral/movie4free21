@@ -188,12 +188,22 @@ def pick_unique_trending(all_movies):
 # For random:
 def pick_unique_random():
     print(f"{get_timestamp()} Picking unique random movie")
-    while True:
+    max_retries = 20
+    for i in range(max_retries):
         movie = request_random_movie()
-        if movie and movie["id"] not in recent_posts:
+        if movie is None:
+            print(f"{get_timestamp()} Failed to fetch random movie (API error), attempt {i+1}/{max_retries}")
+            time.sleep(2) # Wait a bit before retrying
+            continue
+
+        if movie["id"] not in recent_posts:
             print(f"{get_timestamp()} Found unique movie: {movie['title']}")
             return movie
-        print(f"{get_timestamp()} Movie already in recent posts, trying again")
+        
+        print(f"{get_timestamp()} Movie '{movie['title']}' already in recent posts, trying again")
+    
+    print(f"{get_timestamp()} Could not find a unique random movie after {max_retries} attempts.")
+    return None
 
 
 async def post_to_telegram(movie):
