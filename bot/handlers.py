@@ -4,7 +4,7 @@ from aiogram import Router, F
 from tmdb_api.search import search_movie, search_tv, get_tv_details
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
-from bot.keyboards import get_pagination_keyboard, get_seasons_keyboard
+from bot.keyboards import get_pagination_keyboard, get_seasons_keyboard, get_episodes_keyboard
 import math
 from datetime import datetime
 import re
@@ -42,7 +42,7 @@ def format_results(items, item_type='movie'):
             title_text = item.get('name', 'N/A')
             date_text = item.get('first_air_date', 'N/A')
             item_id = item['id']
-            link = f"[Watch here](/view_tv_{item_id})"
+            link = f"Watch here: /view\_tv\_{item_id}"
         
         year = date_text[:4] if date_text and len(date_text) >= 4 else 'N/A'
         
@@ -118,18 +118,23 @@ async def process_season_selection(callback: CallbackQuery):
     action = f"selected season callback: {callback.data}"
     log_message(user, action)
     
-    # data format: season_{tv_id}_{season_number}
+    # data format: season_{tv_id}_{season_number}_{episode_count}
     parts = callback.data.split("_")
-    if len(parts) >= 3:
+    if len(parts) >= 4:
         tv_id = parts[1]
         season_number = parts[2]
+        episode_count = int(parts[3])
         
-        # Here we would typically list episodes or provide a link
+        bot_message = f"Select an episode for Season {season_number}:"
+        await callback.message.answer(bot_message, reply_markup=get_episodes_keyboard(tv_id, season_number, episode_count))
+    elif len(parts) == 3:
+         # Fallback for old buttons or if episode count is missing
+        tv_id = parts[1]
+        season_number = parts[2]
         link = f"https://www.vidking.net/embed/tv/{tv_id}/{season_number}/1"
         bot_message = f"You selected Season {season_number}. [Watch here]({link})"
-        # For now, just acknowledge. In a real app we might list episodes.
         await callback.message.answer(bot_message, disable_web_page_preview=True)
-        
+
     await callback.answer()
 
 @router.message(SearchState.waiting_for_query)
