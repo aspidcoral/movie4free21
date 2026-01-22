@@ -27,7 +27,7 @@ def escape_markdown(text):
     """Escapes special characters for MarkdownV2."""
     if not text:
         return ""
-    escape_chars = r'_*[]()~`>#+-=|{}.!'
+    escape_chars = r'\_*[]()~`>#+-=|{}.!'
     return re.sub(f'([{re.escape(escape_chars)}])', r'\\\1', str(text))
 
 def format_results(items, item_type='movie'):
@@ -63,7 +63,7 @@ async def cmd_start(message: Message):
     user = message.from_user.username
     action = "/start"
     log_message(user, action)
-    bot_message = f"Hello, *{escape_markdown(message.from_user.first_name)}*, You’re using a bot for searching movies & TV shows 🎬\nTo start searching, use /movie or /tv_show commands"
+    bot_message = f"Hello, *{escape_markdown(message.from_user.first_name)}*, You’re using a bot for searching movies & TV shows 🎬\nTo start searching, use /movie or /tv\_show commands"
     await message.answer(text=bot_message, parse_mode='MarkdownV2')
     log_message(user, action, bot_message)
 

@@ -50,8 +50,8 @@ async def main():
     dp = Dispatcher()
     dp.include_router(router)
 
-    content_thread = threading.Thread(target=content_loop)
-    content_thread.start()
+    # content_thread = threading.Thread(target=content_loop)
+    # content_thread.start()
 
     await dp.start_polling(bot)
 
