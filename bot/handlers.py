@@ -63,7 +63,7 @@ async def cmd_start(message: Message):
     user = message.from_user.username
     action = "/start"
     log_message(user, action)
-    bot_message = f"Hello, *{escape_markdown(message.from_user.first_name)}*, You’re using a bot for searching movies & TV shows 🎬\nTo start searching, use /movie or /tv\-show commands"
+    bot_message = f"Hello, *{escape_markdown(message.from_user.first_name)}*, You’re using a bot for searching movies & TV shows 🎬\nTo start searching, use /movie or /tv_show commands"
     await message.answer(text=bot_message, parse_mode='MarkdownV2')
     log_message(user, action, bot_message)
 
@@ -78,10 +78,10 @@ async def cmd_movie(message: Message, state: FSMContext):
     await state.update_data(search_type='movie')
     await state.set_state(SearchState.waiting_for_query)
 
-@router.message(Command("tv-show"))
+@router.message(Command("tv_show"))
 async def cmd_tv(message: Message, state: FSMContext):
     user = message.from_user.username
-    action = "/tv-show"
+    action = "/tv_show"
     log_message(user, action)
     bot_message = "Please enter the name of the TV show you’re looking for: 📺\n(TV show name only)"
     await message.answer(bot_message)
